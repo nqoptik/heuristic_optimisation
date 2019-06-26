@@ -41,13 +41,13 @@ int main() {
     float greedy_cost;
     greedy(number_of_vertices, start, cost_matrix, greedy_tour, greedy_cost);
     cv::Mat greedy_map(height, width, CV_8UC3, cv::Scalar(255, 255, 255));
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         cv::circle(greedy_map, cv::Point(vertices[i][0], vertices[i][1]),
                    1, cv::Scalar(0, 0, 255), 2, 0);
         cv::imshow("Cities", greedy_map);
         cv::waitKey(1);
     }
-    for (int i = 0; i < number_of_vertices - 1; i++) {
+    for (int i = 0; i < number_of_vertices - 1; ++i) {
         cv::line(greedy_map,
                  cv::Point(vertices[greedy_tour[i]][0], vertices[greedy_tour[i]][1]),
                  cv::Point(vertices[greedy_tour[i + 1]][0], vertices[greedy_tour[i + 1]][1]),
@@ -79,7 +79,7 @@ void generate_vertices(std::string file_name,
     std::ofstream fs;
     fs.open(file_name.c_str());
     fs << number_of_vertices << std::endl;
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         vertices[i] = std::vector<int>(2);
         int x = rand() % ((width - border * 3) / step_size) * step_size + border;
         int y = rand() % ((height - border * 3) / step_size) * step_size + border;
@@ -95,9 +95,9 @@ void compute_cost_matrix(std::string file_name,
                          std::vector<std::vector<int>> vertices,
                          std::vector<std::vector<float>>& cost_matrix) {
     cost_matrix = std::vector<std::vector<float>>(number_of_vertices);
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         cost_matrix[i] = std::vector<float>(number_of_vertices);
-        for (int j = 0; j < number_of_vertices; j++) {
+        for (int j = 0; j < number_of_vertices; ++j) {
             if (i == j) {
                 cost_matrix[i][j] = 99999;
             } else {
@@ -111,8 +111,8 @@ void compute_cost_matrix(std::string file_name,
     std::ofstream fs;
     fs.open(file_name.c_str());
     fs << number_of_vertices << std::endl;
-    for (int i = 0; i < number_of_vertices; i++) {
-        for (int j = 0; j < number_of_vertices; j++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
+        for (int j = 0; j < number_of_vertices; ++j) {
             fs << cost_matrix[i][j] << " ";
         }
         fs << std::endl;

@@ -49,11 +49,11 @@ int main() {
             number_of_generations, cost_matrix, genetic_tour, genetic_algorithm_cost);
 
     cv::Mat genetic_map(height, width, CV_8UC3, cv::Scalar(255, 255, 255));
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         cv::circle(genetic_map, cv::Point(vertices[i][0], vertices[i][1]),
                    1, cv::Scalar(0, 0, 255), 2, 0);
     }
-    for (int i = 0; i < number_of_vertices - 1; i++) {
+    for (int i = 0; i < number_of_vertices - 1; ++i) {
         cv::line(genetic_map,
                  cv::Point(vertices[genetic_tour[i]][0], vertices[genetic_tour[i]][1]),
                  cv::Point(vertices[genetic_tour[i + 1]][0], vertices[genetic_tour[i + 1]][1]),
@@ -80,7 +80,7 @@ void generate_vertices(std::string file_name,
     std::ofstream fs;
     fs.open(file_name.c_str());
     fs << number_of_vertices << std::endl;
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         vertices[i] = std::vector<int>(2);
         int x = rand() % ((width - border * 3) / step_size) * step_size + border;
         int y = rand() % ((height - border * 3) / step_size) * step_size + border;
@@ -96,9 +96,9 @@ void compute_cost_matrix(std::string file_name,
                          std::vector<std::vector<int>> vertices,
                          std::vector<std::vector<float>>& cost_matrix) {
     cost_matrix = std::vector<std::vector<float>>(number_of_vertices);
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         cost_matrix[i] = std::vector<float>(number_of_vertices);
-        for (int j = 0; j < number_of_vertices; j++) {
+        for (int j = 0; j < number_of_vertices; ++j) {
             if (i == j) {
                 cost_matrix[i][j] = 99999;
             } else {
@@ -112,8 +112,8 @@ void compute_cost_matrix(std::string file_name,
     std::ofstream fs;
     fs.open(file_name.c_str());
     fs << number_of_vertices << std::endl;
-    for (int i = 0; i < number_of_vertices; i++) {
-        for (int j = 0; j < number_of_vertices; j++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
+        for (int j = 0; j < number_of_vertices; ++j) {
             fs << cost_matrix[i][j] << " ";
         }
         fs << std::endl;
@@ -152,8 +152,8 @@ void genetic(int number_of_vertices,
              float& cost) {
     std::vector<std::vector<int>> population = std::vector<std::vector<int>>(population_size + hybridization_size * 2 + mutation_size);
     initialise(number_of_vertices, population_size, hybridization_size, mutation_size, population);
-    for (int generation = 0; generation < number_of_generations; generation++) {
-        for (int i = 0; i < hybridization_size; i++) {
+    for (int generation = 0; generation < number_of_generations; ++generation) {
+        for (int i = 0; i < hybridization_size; ++i) {
             int first_individual_index = rand() % population_size;
             int second_individual_index = rand() % population_size;
             int from = rand() % number_of_vertices;
@@ -163,13 +163,13 @@ void genetic(int number_of_vertices,
                       population[second_individual_index],
                       tour1_,
                       tour2_, from, to);
-            for (int idx = 0; idx < number_of_vertices; idx++) {
-                population[population_size + 2 * i][idx] = tour1_[idx];
-                population[population_size + 2 * i + 1][idx] = tour2_[idx];
+            for (int index = 0; index < number_of_vertices; ++index) {
+                population[population_size + 2 * i][index] = tour1_[index];
+                population[population_size + 2 * i + 1][index] = tour2_[index];
             }
         }
 
-        for (int i = 0; i < mutation_size; i++) {
+        for (int i = 0; i < mutation_size; ++i) {
             int individual_index = rand() % population_size;
             int method = rand() % 3;
             int from = rand() % number_of_vertices;
@@ -179,8 +179,8 @@ void genetic(int number_of_vertices,
             mutate(number_of_vertices, population[individual_index],
                    tour_, method,
                    from, to);
-            for (int idx = 0; idx < number_of_vertices; idx++) {
-                population[population_size + 2 * hybridization_size + i][idx] = tour_[idx];
+            for (int index = 0; index < number_of_vertices; ++index) {
+                population[population_size + 2 * hybridization_size + i][index] = tour_[index];
             }
         }
 
@@ -189,7 +189,7 @@ void genetic(int number_of_vertices,
                cost_matrix, population, current_costs);
         cost = current_costs[0];
     }
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         tour.push_back(population[0][i]);
     }
 }
@@ -199,19 +199,19 @@ void initialise(int number_of_vertices,
                 int hybridization_size,
                 int mutation_size,
                 std::vector<std::vector<int>>& population) {
-    for (int i = 0; i < population_size + hybridization_size * 2 + mutation_size; i++) {
+    for (int i = 0; i < population_size + hybridization_size * 2 + mutation_size; ++i) {
         population[i] = std::vector<int>(number_of_vertices);
         std::vector<int> flag = std::vector<int>(number_of_vertices, 0);
-        for (int j = 0; j < number_of_vertices; j++) {
+        for (int j = 0; j < number_of_vertices; ++j) {
             int shifting_vertex = rand() % (number_of_vertices - j);
 
             int current_vertex = 0;
             while (flag[current_vertex] != 0) {
-                current_vertex++;
+                ++current_vertex;
             }
 
             while (shifting_vertex != 0) {
-                current_vertex++;
+                ++current_vertex;
                 if (flag[current_vertex] == 0) {
                     shifting_vertex--;
                 }
@@ -237,20 +237,20 @@ void hybridise(int number_of_vertices,
     std::vector<int> checkTour2 = std::vector<int>(number_of_vertices, 0);
 
     if (from < to) {
-        for (int i = from; i <= to; i++) {
+        for (int i = from; i <= to; ++i) {
             flag[i] = 1;
         }
     } else {
-        for (int i = to; i <= from; i++) {
+        for (int i = to; i <= from; ++i) {
             flag[i] = 1;
         }
     }
 
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         if (flag[i] == 1) {
             tour1_[i] = tour2[i];
             tour2_[i] = tour1[i];
-            for (int j = 0; j < number_of_vertices; j++) {
+            for (int j = 0; j < number_of_vertices; ++j) {
                 if (tour1[j] == tour2[i]) {
                     checkTour1[j] = 1;
                 }
@@ -263,18 +263,18 @@ void hybridise(int number_of_vertices,
 
     int current_index_1 = 0;
     int current_index_2 = 0;
-    for (int i = 0; i < number_of_vertices; i++) {
+    for (int i = 0; i < number_of_vertices; ++i) {
         while (checkTour1[current_index_1] == 1) {
-            current_index_1++;
+            ++current_index_1;
         }
         while (checkTour2[current_index_2] == 1) {
-            current_index_2++;
+            ++current_index_2;
         }
         if (flag[i] == 0) {
             tour1_[i] = tour1[current_index_1];
             tour2_[i] = tour2[current_index_2];
-            current_index_1++;
-            current_index_2++;
+            ++current_index_1;
+            ++current_index_2;
         }
     }
 }
@@ -289,29 +289,29 @@ void mutate(int number_of_vertices, std::vector<int> tour, std::vector<int>& tou
     }
 
     if (method == 0) {
-        for (int i = 0; i < number_of_vertices; i++) {
+        for (int i = 0; i < number_of_vertices; ++i) {
             tour_[i] = tour[i];
         }
         tour_[from] = tour[to];
         tour_[to] = tour[from];
     } else if (method == 1) {
-        for (int i = 0; i < from; i++) {
+        for (int i = 0; i < from; ++i) {
             tour_[i] = tour[i];
         }
-        for (int i = from; i <= to; i++) {
+        for (int i = from; i <= to; ++i) {
             tour_[i] = tour[from + to - i];
         }
-        for (int i = to + 1; i < number_of_vertices; i++) {
+        for (int i = to + 1; i < number_of_vertices; ++i) {
             tour_[i] = tour[i];
         }
     } else {
-        for (int i = 0; i < from; i++) {
+        for (int i = 0; i < from; ++i) {
             tour_[i] = tour[i];
         }
-        for (int i = from; i < from + (number_of_vertices - (to + 1)); i++) {
+        for (int i = from; i < from + (number_of_vertices - (to + 1)); ++i) {
             tour_[i] = tour[i + to - from + 1];
         }
-        for (int i = from + (number_of_vertices - (to + 1)); i < number_of_vertices; i++) {
+        for (int i = from + (number_of_vertices - (to + 1)); i < number_of_vertices; ++i) {
             tour_[i] = tour[i - (number_of_vertices - (to + 1))];
         }
     }
@@ -326,24 +326,24 @@ void select(int number_of_vertices,
             std::vector<float>& current_costs) {
     int current_population_size = population_size + 2 * hybridization_size + mutation_size;
     current_costs = std::vector<float>(current_population_size);
-    for (int i = 0; i < current_population_size; i++) {
+    for (int i = 0; i < current_population_size; ++i) {
         float current_cost = 0;
-        for (int j = 0; j < number_of_vertices; j++) {
+        for (int j = 0; j < number_of_vertices; ++j) {
             current_cost += cost_matrix[population[i][j]][population[i][(j + 1) % number_of_vertices]];
         }
         current_costs[i] = current_cost;
     }
 
-    for (int i = 0; i < current_population_size; i++) {
-        for (int j = i + 1; j < current_population_size; j++) {
+    for (int i = 0; i < current_population_size; ++i) {
+        for (int j = i + 1; j < current_population_size; ++j) {
             if (current_costs[i] > current_costs[j]) {
                 float temporary_cost = current_costs[i];
                 current_costs[i] = current_costs[j];
                 current_costs[j] = temporary_cost;
-                for (int idx = 0; idx < number_of_vertices; idx++) {
-                    int tmp = population[i][idx];
-                    population[i][idx] = population[j][idx];
-                    population[j][idx] = tmp;
+                for (int index = 0; index < number_of_vertices; ++index) {
+                    int tmp = population[i][index];
+                    population[i][index] = population[j][index];
+                    population[j][index] = tmp;
                 }
             }
         }
