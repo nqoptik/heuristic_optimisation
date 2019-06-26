@@ -27,7 +27,7 @@ void genetic(int number_of_vertices,
              std::vector<int>& tour,
              float& cost);
 
-int main(int argc, char** argv) {
+int main() {
     int height = 800;
     int width = 1200;
     int step_size = 8;

@@ -24,7 +24,7 @@ void greedy(int number_of_vertices,
             std::vector<int>& tour,
             float& cost);
 
-int main(int argc, char** argv) {
+int main() {
     int height = 800;
     int width = 1200;
     int step_size = 8;
@@ -133,7 +133,7 @@ void greedy(int number_of_vertices,
     cost = 0;
     for (int step = 1; step < number_of_vertices; step++) {
         float minCost = 9999;
-        int nearest_vertex;
+        int nearest_vertex = 0;
         for (int next_vertex = 0; next_vertex < number_of_vertices; next_vertex++) {
             if (minCost > cost_matrix[current_vertex][next_vertex] &&
                 flag[next_vertex] == 0) {

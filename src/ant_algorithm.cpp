@@ -29,7 +29,7 @@ void ant(int number_of_vertices,
          std::vector<int>& tour,
          float& cost);
 
-int main(int argc, char** argv) {
+int main() {
     int height = 800;
     int width = 1200;
     int step_size = 8;
@@ -163,7 +163,7 @@ void ant(int number_of_vertices,
         int current_vertex = start;
 
         for (int step = 1; step < number_of_vertices; step++) {
-            int selected_vertex;
+            int selected_vertex = 0;
 
             for (int i = 0; i < number_of_vertices; i++) {
                 probability[i] = 0;
