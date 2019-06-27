@@ -7,27 +7,40 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-void generate_vertices(std::string file_name,
-                       int height,
-                       int width,
-                       int step_size,
-                       int border,
-                       int number_of_vertices,
+void generate_vertices(const std::string file_name,
+                       const int height,
+                       const int width,
+                       const int step_size,
+                       const int border,
+                       const int number_of_vertices,
                        std::vector<std::vector<int>>& vertices);
-void compute_cost_matrix(std::string file_name,
-                         int number_of_vertices,
-                         std::vector<std::vector<int>> vertices,
+void compute_cost_matrix(const std::string file_name,
+                         const int number_of_vertices,
+                         const std::vector<std::vector<int>> vertices,
                          std::vector<std::vector<float>>& cost_matrix);
-void ant(int number_of_vertices,
-         int number_of_ants,
-         float evaporation,
-         std::vector<std::vector<int>> vertices,
-         int width,
-         int height,
-         int border,
-         std::vector<std::vector<float>> cost_matrix,
+void ant(const int number_of_vertices,
+         const int number_of_ants,
+         const float evaporation,
+         const std::vector<std::vector<int>> vertices,
+         const int width,
+         const int height,
+         const int border,
+         const std::vector<std::vector<float>> cost_matrix,
          std::vector<int>& tour,
          float& cost);
+void initialise_ant_algorithm(const int number_of_vertices,
+                              const float initial_pheromone,
+                              const float scale_factor,
+                              const std::vector<std::vector<float>> cost_matrix,
+                              std::vector<std::vector<float>>& pheromone,
+                              std::vector<std::vector<float>>& heuristic_factors);
+
+void update_pheromone(const int number_of_vertices,
+                      const std::vector<int> path,
+                      const float scale_factor,
+                      const std::vector<std::vector<float>> cost_matrix,
+                      const float evaporation,
+                      std::vector<std::vector<float>>& pheromone);
 
 int main() {
     int height = 800;
@@ -53,12 +66,12 @@ int main() {
     return 0;
 }
 
-void generate_vertices(std::string file_name,
-                       int height,
-                       int width,
-                       int step_size,
-                       int border,
-                       int number_of_vertices,
+void generate_vertices(const std::string file_name,
+                       const int height,
+                       const int width,
+                       const int step_size,
+                       const int border,
+                       const int number_of_vertices,
                        std::vector<std::vector<int>>& vertices) {
     vertices = std::vector<std::vector<int>>(number_of_vertices);
     std::ofstream fs;
@@ -75,9 +88,9 @@ void generate_vertices(std::string file_name,
     fs.close();
 }
 
-void compute_cost_matrix(std::string file_name,
-                         int number_of_vertices,
-                         std::vector<std::vector<int>> vertices,
+void compute_cost_matrix(const std::string file_name,
+                         const int number_of_vertices,
+                         const std::vector<std::vector<int>> vertices,
                          std::vector<std::vector<float>>& cost_matrix) {
     cost_matrix = std::vector<std::vector<float>>(number_of_vertices);
     for (int i = 0; i < number_of_vertices; ++i) {
@@ -105,28 +118,14 @@ void compute_cost_matrix(std::string file_name,
     fs.close();
 }
 
-void initialise_ant_algorithm(int number_of_vertices,
-                              float initial_pheromone,
-                              float scale_factor,
-                              std::vector<std::vector<float>> cost_matrix,
-                              std::vector<std::vector<float>>& pheromone,
-                              std::vector<std::vector<float>>& heuristic_factors);
-
-void update_pheromone(int number_of_vertices,
-                      std::vector<int> path,
-                      float scale_factor,
-                      std::vector<std::vector<float>> cost_matrix,
-                      float evaporation,
-                      std::vector<std::vector<float>>& pheromone);
-
-void ant(int number_of_vertices,
-         int number_of_ants,
-         float evaporation,
-         std::vector<std::vector<int>> vertices,
-         int width,
-         int height,
-         int border,
-         std::vector<std::vector<float>> cost_matrix,
+void ant(const int number_of_vertices,
+         const int number_of_ants,
+         const float evaporation,
+         const std::vector<std::vector<int>> vertices,
+         const int width,
+         const int height,
+         const int border,
+         const std::vector<std::vector<float>> cost_matrix,
          std::vector<int>& tour,
          float& cost) {
     cost = 99999;
@@ -254,10 +253,10 @@ void ant(int number_of_vertices,
     }
 }
 
-void initialise_ant_algorithm(int number_of_vertices,
-                              float initial_pheromone,
-                              float scale_factor,
-                              std::vector<std::vector<float>> cost_matrix,
+void initialise_ant_algorithm(const int number_of_vertices,
+                              const float initial_pheromone,
+                              const float scale_factor,
+                              const std::vector<std::vector<float>> cost_matrix,
                               std::vector<std::vector<float>>& pheromone,
                               std::vector<std::vector<float>>& heuristic_factors) {
     pheromone = std::vector<std::vector<float>>(number_of_vertices);
@@ -281,11 +280,11 @@ void initialise_ant_algorithm(int number_of_vertices,
     }
 }
 
-void update_pheromone(int number_of_vertices,
-                      std::vector<int> path,
-                      float scale_factor,
-                      std::vector<std::vector<float>> cost_matrix,
-                      float evaporation,
+void update_pheromone(const int number_of_vertices,
+                      const std::vector<int> path,
+                      const float scale_factor,
+                      const std::vector<std::vector<float>> cost_matrix,
+                      const float evaporation,
                       std::vector<std::vector<float>>& pheromone) {
     float current_cost = 0;
     for (int i = 1; i < number_of_vertices; ++i) {

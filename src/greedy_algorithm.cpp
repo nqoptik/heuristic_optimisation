@@ -7,20 +7,20 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-void generate_vertices(std::string file_name,
-                       int height,
-                       int width,
-                       int step_size,
-                       int border,
-                       int number_of_vertices,
+void generate_vertices(const std::string file_name,
+                       const int height,
+                       const int width,
+                       const int step_size,
+                       const int border,
+                       const int number_of_vertices,
                        std::vector<std::vector<int>>& vertices);
-void compute_cost_matrix(std::string file_name,
-                         int number_of_vertices,
-                         std::vector<std::vector<int>> vertices,
+void compute_cost_matrix(const std::string file_name,
+                         const int number_of_vertices,
+                         const std::vector<std::vector<int>> vertices,
                          std::vector<std::vector<float>>& cost_matrix);
-void greedy(int number_of_vertices,
-            int start,
-            std::vector<std::vector<float>> cost_matrix,
+void greedy(const int number_of_vertices,
+            const int start,
+            const std::vector<std::vector<float>> cost_matrix,
             std::vector<int>& tour,
             float& cost);
 
@@ -68,12 +68,12 @@ int main() {
     return 0;
 }
 
-void generate_vertices(std::string file_name,
-                       int height,
-                       int width,
-                       int step_size,
-                       int border,
-                       int number_of_vertices,
+void generate_vertices(const std::string file_name,
+                       const int height,
+                       const int width,
+                       const int step_size,
+                       const int border,
+                       const int number_of_vertices,
                        std::vector<std::vector<int>>& vertices) {
     vertices = std::vector<std::vector<int>>(number_of_vertices);
     std::ofstream fs;
@@ -90,9 +90,9 @@ void generate_vertices(std::string file_name,
     fs.close();
 }
 
-void compute_cost_matrix(std::string file_name,
-                         int number_of_vertices,
-                         std::vector<std::vector<int>> vertices,
+void compute_cost_matrix(const std::string file_name,
+                         const int number_of_vertices,
+                         const std::vector<std::vector<int>> vertices,
                          std::vector<std::vector<float>>& cost_matrix) {
     cost_matrix = std::vector<std::vector<float>>(number_of_vertices);
     for (int i = 0; i < number_of_vertices; ++i) {
@@ -120,9 +120,9 @@ void compute_cost_matrix(std::string file_name,
     fs.close();
 }
 
-void greedy(int number_of_vertices,
-            int start,
-            std::vector<std::vector<float>> cost_matrix,
+void greedy(const int number_of_vertices,
+            const int start,
+            const std::vector<std::vector<float>> cost_matrix,
             std::vector<int>& tour,
             float& cost) {
     std::vector<int> flag = std::vector<int>(number_of_vertices, 0);
