@@ -1,4 +1,4 @@
-# Heuristic optimization algorithms from advanced courses at Hanoi University of Science and Technology
+# Heuristic optimisation algorithms
 A simple implementation of finding shortest path using ant algorithm and genetic algorithm .
 
 ## Prerequisites

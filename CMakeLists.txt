@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(heuristic_optimization)
+project(heuristic_optimisation)
 
 ## Compile as C++11
 set(CMAKE_CXX_STANDARD 11)
