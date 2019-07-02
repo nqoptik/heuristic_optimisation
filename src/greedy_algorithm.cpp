@@ -7,17 +7,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-void generate_vertices(const std::string file_name,
-                       const int height,
-                       const int width,
-                       const int step_size,
-                       const int border,
-                       const int number_of_vertices,
-                       std::vector<std::vector<int>>& vertices);
-void compute_cost_matrix(const std::string file_name,
-                         const int number_of_vertices,
-                         const std::vector<std::vector<int>> vertices,
-                         std::vector<std::vector<float>>& cost_matrix);
+#include "heuristic_optimisaion/common.hpp"
+
 void greedy(const int number_of_vertices,
             const int start,
             const std::vector<std::vector<float>> cost_matrix,
@@ -68,58 +59,6 @@ int main() {
     return 0;
 }
 
-void generate_vertices(const std::string file_name,
-                       const int height,
-                       const int width,
-                       const int step_size,
-                       const int border,
-                       const int number_of_vertices,
-                       std::vector<std::vector<int>>& vertices) {
-    vertices = std::vector<std::vector<int>>(number_of_vertices);
-    std::ofstream fs;
-    fs.open(file_name.c_str());
-    fs << number_of_vertices << std::endl;
-    for (int i = 0; i < number_of_vertices; ++i) {
-        vertices[i] = std::vector<int>(2);
-        int x = rand() % ((width - border * 3) / step_size) * step_size + border;
-        int y = rand() % ((height - border * 3) / step_size) * step_size + border;
-        vertices[i][0] = x;
-        vertices[i][1] = y;
-        fs << vertices[i][0] << " " << vertices[i][1] << std::endl;
-    }
-    fs.close();
-}
-
-void compute_cost_matrix(const std::string file_name,
-                         const int number_of_vertices,
-                         const std::vector<std::vector<int>> vertices,
-                         std::vector<std::vector<float>>& cost_matrix) {
-    cost_matrix = std::vector<std::vector<float>>(number_of_vertices);
-    for (int i = 0; i < number_of_vertices; ++i) {
-        cost_matrix[i] = std::vector<float>(number_of_vertices);
-        for (int j = 0; j < number_of_vertices; ++j) {
-            if (i == j) {
-                cost_matrix[i][j] = 99999;
-            } else {
-                int dx = vertices[i][0] - vertices[j][0];
-                int dy = vertices[i][1] - vertices[j][1];
-                cost_matrix[i][j] = sqrt(dx * dx + dy * dy);
-            }
-        }
-    }
-
-    std::ofstream fs;
-    fs.open(file_name.c_str());
-    fs << number_of_vertices << std::endl;
-    for (int i = 0; i < number_of_vertices; ++i) {
-        for (int j = 0; j < number_of_vertices; ++j) {
-            fs << cost_matrix[i][j] << " ";
-        }
-        fs << std::endl;
-    }
-    fs.close();
-}
-
 void greedy(const int number_of_vertices,
             const int start,
             const std::vector<std::vector<float>> cost_matrix,
@@ -131,10 +70,10 @@ void greedy(const int number_of_vertices,
     flag[start] = 1;
     int current_vertex = start;
     cost = 0;
-    for (int step = 1; step < number_of_vertices; step++) {
+    for (int step = 1; step < number_of_vertices; ++step) {
         float minCost = 9999;
         int nearest_vertex = 0;
-        for (int next_vertex = 0; next_vertex < number_of_vertices; next_vertex++) {
+        for (int next_vertex = 0; next_vertex < number_of_vertices; ++next_vertex) {
             if (minCost > cost_matrix[current_vertex][next_vertex] &&
                 flag[next_vertex] == 0) {
                 minCost = cost_matrix[current_vertex][next_vertex];
