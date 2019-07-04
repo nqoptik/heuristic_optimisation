@@ -9,9 +9,9 @@
 
 #include "heuristic_optimisaion/common.hpp"
 
-void greedy(const int number_of_vertices,
-            const int start,
-            const std::vector<std::vector<float>> cost_matrix,
+void greedy(const int& number_of_vertices,
+            const int& start,
+            const std::vector<std::vector<float>>& cost_matrix,
             std::vector<int>& tour,
             float& cost);
 
@@ -59,9 +59,9 @@ int main() {
     return 0;
 }
 
-void greedy(const int number_of_vertices,
-            const int start,
-            const std::vector<std::vector<float>> cost_matrix,
+void greedy(const int& number_of_vertices,
+            const int& start,
+            const std::vector<std::vector<float>>& cost_matrix,
             std::vector<int>& tour,
             float& cost) {
     std::vector<int> flag = std::vector<int>(number_of_vertices, 0);

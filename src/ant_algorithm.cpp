@@ -9,28 +9,28 @@
 
 #include "heuristic_optimisaion/common.hpp"
 
-void ant(const int number_of_vertices,
-         const int number_of_ants,
-         const float evaporation,
-         const std::vector<std::vector<int>> vertices,
-         const int width,
-         const int height,
-         const int border,
-         const std::vector<std::vector<float>> cost_matrix,
+void ant(const int& number_of_vertices,
+         const int& number_of_ants,
+         const float& evaporation,
+         const std::vector<std::vector<int>>& vertices,
+         const int& width,
+         const int& height,
+         const int& border,
+         const std::vector<std::vector<float>>& cost_matrix,
          std::vector<int>& tour,
          float& cost);
-void initialise_ant_algorithm(const int number_of_vertices,
-                              const float initial_pheromone,
-                              const float scale_factor,
-                              const std::vector<std::vector<float>> cost_matrix,
+void initialise_ant_algorithm(const int& number_of_vertices,
+                              const float& initial_pheromone,
+                              const float& scale_factor,
+                              const std::vector<std::vector<float>>& cost_matrix,
                               std::vector<std::vector<float>>& pheromone,
                               std::vector<std::vector<float>>& heuristic_factors);
 
-void update_pheromone(const int number_of_vertices,
-                      const std::vector<int> path,
-                      const float scale_factor,
-                      const std::vector<std::vector<float>> cost_matrix,
-                      const float evaporation,
+void update_pheromone(const int& number_of_vertices,
+                      const std::vector<int>& path,
+                      const float& scale_factor,
+                      const std::vector<std::vector<float>>& cost_matrix,
+                      const float& evaporation,
                       std::vector<std::vector<float>>& pheromone);
 
 int main() {
@@ -57,14 +57,14 @@ int main() {
     return 0;
 }
 
-void ant(const int number_of_vertices,
-         const int number_of_ants,
-         const float evaporation,
-         const std::vector<std::vector<int>> vertices,
-         const int width,
-         const int height,
-         const int border,
-         const std::vector<std::vector<float>> cost_matrix,
+void ant(const int& number_of_vertices,
+         const int& number_of_ants,
+         const float& evaporation,
+         const std::vector<std::vector<int>>& vertices,
+         const int& width,
+         const int& height,
+         const int& border,
+         const std::vector<std::vector<float>>& cost_matrix,
          std::vector<int>& tour,
          float& cost) {
     cost = 99999;
@@ -192,10 +192,10 @@ void ant(const int number_of_vertices,
     }
 }
 
-void initialise_ant_algorithm(const int number_of_vertices,
-                              const float initial_pheromone,
-                              const float scale_factor,
-                              const std::vector<std::vector<float>> cost_matrix,
+void initialise_ant_algorithm(const int& number_of_vertices,
+                              const float& initial_pheromone,
+                              const float& scale_factor,
+                              const std::vector<std::vector<float>>& cost_matrix,
                               std::vector<std::vector<float>>& pheromone,
                               std::vector<std::vector<float>>& heuristic_factors) {
     pheromone = std::vector<std::vector<float>>(number_of_vertices);
@@ -219,11 +219,11 @@ void initialise_ant_algorithm(const int number_of_vertices,
     }
 }
 
-void update_pheromone(const int number_of_vertices,
-                      const std::vector<int> path,
-                      const float scale_factor,
-                      const std::vector<std::vector<float>> cost_matrix,
-                      const float evaporation,
+void update_pheromone(const int& number_of_vertices,
+                      const std::vector<int>& path,
+                      const float& scale_factor,
+                      const std::vector<std::vector<float>>& cost_matrix,
+                      const float& evaporation,
                       std::vector<std::vector<float>>& pheromone) {
     float current_cost = 0;
     for (int i = 1; i < number_of_vertices; ++i) {

@@ -17,16 +17,16 @@
 #include <stdlib.h>
 #include <vector>
 
-void generate_vertices(const std::string file_name,
-                       const int height,
-                       const int width,
-                       const int step_size,
-                       const int border,
-                       const int number_of_vertices,
+void generate_vertices(const std::string& file_name,
+                       const int& height,
+                       const int& width,
+                       const int& step_size,
+                       const int& border,
+                       const int& number_of_vertices,
                        std::vector<std::vector<int>>& vertices);
-void compute_cost_matrix(const std::string file_name,
-                         const int number_of_vertices,
-                         const std::vector<std::vector<int>> vertices,
+void compute_cost_matrix(const std::string& file_name,
+                         const int& number_of_vertices,
+                         const std::vector<std::vector<int>>& vertices,
                          std::vector<std::vector<float>>& cost_matrix);
 
 #endif  // COMMON_HPP
