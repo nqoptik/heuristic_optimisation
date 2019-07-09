@@ -1,7 +1,7 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
 #include <cmath>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -15,7 +15,8 @@ void greedy(const int& number_of_vertices,
             std::vector<int>& tour,
             float& cost);
 
-int main() {
+int main()
+{
     int height = 800;
     int width = 1200;
     int step_size = 8;
@@ -32,13 +33,15 @@ int main() {
     float greedy_cost;
     greedy(number_of_vertices, start, cost_matrix, greedy_tour, greedy_cost);
     cv::Mat greedy_map(height, width, CV_8UC3, cv::Scalar(255, 255, 255));
-    for (int i = 0; i < number_of_vertices; ++i) {
+    for (int i = 0; i < number_of_vertices; ++i)
+    {
         cv::circle(greedy_map, cv::Point(vertices[i][0], vertices[i][1]),
                    1, cv::Scalar(0, 0, 255), 2, 0);
         cv::imshow("Cities", greedy_map);
         cv::waitKey(1);
     }
-    for (int i = 0; i < number_of_vertices - 1; ++i) {
+    for (int i = 0; i < number_of_vertices - 1; ++i)
+    {
         cv::line(greedy_map,
                  cv::Point(vertices[greedy_tour[i]][0], vertices[greedy_tour[i]][1]),
                  cv::Point(vertices[greedy_tour[i + 1]][0], vertices[greedy_tour[i + 1]][1]),
@@ -63,19 +66,23 @@ void greedy(const int& number_of_vertices,
             const int& start,
             const std::vector<std::vector<float>>& cost_matrix,
             std::vector<int>& tour,
-            float& cost) {
+            float& cost)
+{
     std::vector<int> flag = std::vector<int>(number_of_vertices, 0);
     tour = std::vector<int>(number_of_vertices);
     tour[0] = start;
     flag[start] = 1;
     int current_vertex = start;
     cost = 0;
-    for (int step = 1; step < number_of_vertices; ++step) {
-        float minCost = 9999;
+    for (int step = 1; step < number_of_vertices; ++step)
+    {
+        float minCost = FLT_MAX;
         int nearest_vertex = 0;
-        for (int next_vertex = 0; next_vertex < number_of_vertices; ++next_vertex) {
+        for (int next_vertex = 0; next_vertex < number_of_vertices; ++next_vertex)
+        {
             if (minCost > cost_matrix[current_vertex][next_vertex] &&
-                flag[next_vertex] == 0) {
+                flag[next_vertex] == 0)
+            {
                 minCost = cost_matrix[current_vertex][next_vertex];
                 nearest_vertex = next_vertex;
             }

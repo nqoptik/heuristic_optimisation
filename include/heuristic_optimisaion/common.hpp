@@ -11,6 +11,7 @@
 #ifndef COMMON_HPP
 #define COMMON_HPP
 
+#include <cfloat>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -29,4 +30,4 @@ void compute_cost_matrix(const std::string& file_name,
                          const std::vector<std::vector<int>>& vertices,
                          std::vector<std::vector<float>>& cost_matrix);
 
-#endif  // COMMON_HPP
+#endif // COMMON_HPP
