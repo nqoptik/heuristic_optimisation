@@ -1,6 +1,6 @@
 /**
  * @file common.hpp
- * @author Nguyen Quang <nguyenquang.emailbox@gmail.com>
+ * @author Nguyen Quang <nqoptik@gmail.com>
  * @brief Some common functions for heuristic optimisation.
  * @since 0.0.1
  * 

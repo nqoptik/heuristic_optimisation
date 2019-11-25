@@ -1,3 +1,13 @@
+/**
+ * @file ant_algorithm.hpp
+ * @author Nguyen Quang <nqoptik@gmail.com>
+ * @brief The ant algorithm.
+ * @since 0.0.1
+ * 
+ * @copyright Copyright (c) 2016, Nguyen Quang, all rights reserved.
+ * 
+ */
+
 #include <cmath>
 #include <fstream>
 #include <iostream>
