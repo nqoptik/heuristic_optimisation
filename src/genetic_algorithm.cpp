@@ -166,13 +166,13 @@ void initialise(const int& number_of_vertices,
     for (int i = 0; i < population_size + hybridization_size * 2 + mutation_size; ++i)
     {
         population[i] = std::vector<int>(number_of_vertices);
-        std::vector<int> flag = std::vector<int>(number_of_vertices, 0);
+        std::vector<bool> has_been_visited = std::vector<bool>(number_of_vertices, false);
         for (int j = 0; j < number_of_vertices; ++j)
         {
             int shifting_vertex = rand() % (number_of_vertices - j);
 
             int current_vertex = 0;
-            while (flag[current_vertex] != 0)
+            while (has_been_visited[current_vertex] != false)
             {
                 ++current_vertex;
             }
@@ -180,14 +180,14 @@ void initialise(const int& number_of_vertices,
             while (shifting_vertex != 0)
             {
                 ++current_vertex;
-                if (flag[current_vertex] == 0)
+                if (has_been_visited[current_vertex] == false)
                 {
                     shifting_vertex--;
                 }
             }
 
             population[i][j] = current_vertex;
-            flag[current_vertex] = 1;
+            has_been_visited[current_vertex] = true;
         }
     }
 }
@@ -202,28 +202,28 @@ void hybridise(const int& number_of_vertices,
 {
     tour1_ = std::vector<int>(number_of_vertices);
     tour2_ = std::vector<int>(number_of_vertices);
-    std::vector<int> flag = std::vector<int>(number_of_vertices, 0);
-    std::vector<int> checkTour1 = std::vector<int>(number_of_vertices, 0);
-    std::vector<int> checkTour2 = std::vector<int>(number_of_vertices, 0);
+    std::vector<int> has_been_visited = std::vector<int>(number_of_vertices, false);
+    std::vector<int> check_tour_1 = std::vector<int>(number_of_vertices, 0);
+    std::vector<int> check_tour_2 = std::vector<int>(number_of_vertices, 0);
 
     if (from < to)
     {
         for (int i = from; i <= to; ++i)
         {
-            flag[i] = 1;
+            has_been_visited[i] = true;
         }
     }
     else
     {
         for (int i = to; i <= from; ++i)
         {
-            flag[i] = 1;
+            has_been_visited[i] = true;
         }
     }
 
     for (int i = 0; i < number_of_vertices; ++i)
     {
-        if (flag[i] == 1)
+        if (has_been_visited[i] == true)
         {
             tour1_[i] = tour2[i];
             tour2_[i] = tour1[i];
@@ -231,11 +231,11 @@ void hybridise(const int& number_of_vertices,
             {
                 if (tour1[j] == tour2[i])
                 {
-                    checkTour1[j] = 1;
+                    check_tour_1[j] = 1;
                 }
                 if (tour2[j] == tour1[i])
                 {
-                    checkTour2[j] = 1;
+                    check_tour_2[j] = 1;
                 }
             }
         }
@@ -245,15 +245,15 @@ void hybridise(const int& number_of_vertices,
     int current_index_2 = 0;
     for (int i = 0; i < number_of_vertices; ++i)
     {
-        while (checkTour1[current_index_1] == 1)
+        while (check_tour_1[current_index_1] == 1)
         {
             ++current_index_1;
         }
-        while (checkTour2[current_index_2] == 1)
+        while (check_tour_2[current_index_2] == 1)
         {
             ++current_index_2;
         }
-        if (flag[i] == 0)
+        if (has_been_visited[i] == 0)
         {
             tour1_[i] = tour1[current_index_1];
             tour2_[i] = tour2[current_index_2];

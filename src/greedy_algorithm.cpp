@@ -78,29 +78,29 @@ void greedy(const int& number_of_vertices,
             std::vector<int>& tour,
             float& cost)
 {
-    std::vector<int> flag = std::vector<int>(number_of_vertices, 0);
+    std::vector<bool> has_been_visited = std::vector<bool>(number_of_vertices, false);
     tour = std::vector<int>(number_of_vertices);
     tour[0] = start;
-    flag[start] = 1;
+    has_been_visited[start] = true;
     int current_vertex = start;
     cost = 0;
     for (int step = 1; step < number_of_vertices; ++step)
     {
-        float minCost = FLT_MAX;
+        float min_cost = FLT_MAX;
         int nearest_vertex = 0;
         for (int next_vertex = 0; next_vertex < number_of_vertices; ++next_vertex)
         {
-            if (minCost > cost_matrix[current_vertex][next_vertex] &&
-                flag[next_vertex] == 0)
+            if (min_cost > cost_matrix[current_vertex][next_vertex] &&
+                has_been_visited[next_vertex] == false)
             {
-                minCost = cost_matrix[current_vertex][next_vertex];
+                min_cost = cost_matrix[current_vertex][next_vertex];
                 nearest_vertex = next_vertex;
             }
         }
         tour[step] = nearest_vertex;
-        flag[nearest_vertex] = 1;
+        has_been_visited[nearest_vertex] = true;
         current_vertex = nearest_vertex;
-        cost += minCost;
+        cost += min_cost;
     }
     cost += cost_matrix[tour[number_of_vertices - 1]][start];
 }
