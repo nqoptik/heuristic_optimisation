@@ -102,19 +102,19 @@ void ant(const int& number_of_vertices,
     std::vector<std::vector<float>> heuristic_factors;
     initialise_ant_algorithm(number_of_vertices, initial_pheromone, scale_factor, cost_matrix, pheromone,
                              heuristic_factors);
-    std::vector<int> flag = std::vector<int>(number_of_vertices);
+    std::vector<bool> has_been_visited = std::vector<bool>(number_of_vertices);
     std::vector<float> probability = std::vector<float>(number_of_vertices);
     int stop_count = 0;
     for (int ant = 0; ant < number_of_ants; ++ant)
     {
         for (int i = 0; i < number_of_vertices; ++i)
         {
-            flag[i] = 0;
+            has_been_visited[i] = false;
         }
         int start = rand() % number_of_vertices;
         std::vector<int> path = std::vector<int>(number_of_vertices);
         path[0] = start;
-        flag[start] = 1;
+        has_been_visited[start] = true;
         int current_vertex = start;
 
         for (int step = 1; step < number_of_vertices; ++step)
@@ -126,19 +126,19 @@ void ant(const int& number_of_vertices,
                 probability[i] = 0;
             }
 
-            float sumP = 0;
+            float sum_probability = 0;
             for (int next_vertex = 0; next_vertex < number_of_vertices; ++next_vertex)
             {
-                if (flag[next_vertex] == 0)
+                if (has_been_visited[next_vertex] == false)
                 {
                     probability[next_vertex] = pheromone[current_vertex][next_vertex] *
                                                heuristic_factors[current_vertex][next_vertex];
-                    sumP += probability[next_vertex];
+                    sum_probability += probability[next_vertex];
                 }
             }
             for (int next_vertex = 0; next_vertex < number_of_vertices; ++next_vertex)
             {
-                probability[next_vertex] /= sumP;
+                probability[next_vertex] /= sum_probability;
             }
 
             for (int next_vertex = 1; next_vertex < number_of_vertices; ++next_vertex)
@@ -164,7 +164,7 @@ void ant(const int& number_of_vertices,
             }
 
             path[step] = selected_vertex;
-            flag[selected_vertex] = 1;
+            has_been_visited[selected_vertex] = true;
             current_vertex = selected_vertex;
         }
 
