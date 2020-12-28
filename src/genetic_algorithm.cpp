@@ -33,10 +33,10 @@ void initialise(const int& number_of_vertices,
                 const int& mutation_size,
                 std::vector<std::vector<int>>& population);
 void hybridise(const int& number_of_vertices,
-               const std::vector<int>& tour1,
-               const std::vector<int>& tour2,
-               std::vector<int>& tour1_,
-               std::vector<int>& tour2_,
+               const std::vector<int>& tour_1,
+               const std::vector<int>& tour_2,
+               std::vector<int>& tour_1_,
+               std::vector<int>& tour_2_,
                const int& from,
                const int& to);
 void mutate(const int& number_of_vertices,
@@ -59,7 +59,7 @@ int main()
     int width = 1200;
     int step_size = 8;
     int border = 25;
-    int number_of_vertices = 150;
+    int number_of_vertices = 100;
     std::vector<std::vector<int>> vertices;
     generate_vertices("vertices.data", height, width, step_size, border,
                       number_of_vertices, vertices);
@@ -117,16 +117,14 @@ void genetic(const int& number_of_vertices,
             int second_individual_index = rand() % population_size;
             int from = rand() % number_of_vertices;
             int to = rand() % number_of_vertices;
-            std::vector<int> tour1_, tour2_;
+            std::vector<int> tour_1_, tour_2_;
             hybridise(number_of_vertices, population[first_individual_index],
                       population[second_individual_index],
-                      tour1_,
-                      tour2_, from, to);
-            for (int index = 0; index < number_of_vertices; ++index)
-            {
-                population[population_size + 2 * i][index] = tour1_[index];
-                population[population_size + 2 * i + 1][index] = tour2_[index];
-            }
+                      tour_1_,
+                      tour_2_, from, to);
+
+            population[population_size + 2 * i] = tour_1_;
+            population[population_size + 2 * i + 1] = tour_2_;
         }
 
         for (int i = 0; i < mutation_size; ++i)
@@ -140,10 +138,8 @@ void genetic(const int& number_of_vertices,
             mutate(number_of_vertices, population[individual_index],
                    tour_, method,
                    from, to);
-            for (int index = 0; index < number_of_vertices; ++index)
-            {
-                population[population_size + 2 * hybridization_size + i][index] = tour_[index];
-            }
+
+            population[population_size + 2 * hybridization_size + i] = tour_;
         }
 
         std::vector<float> current_costs;
@@ -193,16 +189,16 @@ void initialise(const int& number_of_vertices,
 }
 
 void hybridise(const int& number_of_vertices,
-               const std::vector<int>& tour1,
-               const std::vector<int>& tour2,
-               std::vector<int>& tour1_,
-               std::vector<int>& tour2_,
+               const std::vector<int>& tour_1,
+               const std::vector<int>& tour_2,
+               std::vector<int>& tour_1_,
+               std::vector<int>& tour_2_,
                const int& from,
                const int& to)
 {
-    tour1_ = std::vector<int>(number_of_vertices);
-    tour2_ = std::vector<int>(number_of_vertices);
-    std::vector<int> has_been_visited = std::vector<int>(number_of_vertices, false);
+    tour_1_ = std::vector<int>(number_of_vertices);
+    tour_2_ = std::vector<int>(number_of_vertices);
+    std::vector<bool> is_mixing_strand = std::vector<bool>(number_of_vertices, false);
     std::vector<int> check_tour_1 = std::vector<int>(number_of_vertices, 0);
     std::vector<int> check_tour_2 = std::vector<int>(number_of_vertices, 0);
 
@@ -210,30 +206,30 @@ void hybridise(const int& number_of_vertices,
     {
         for (int i = from; i <= to; ++i)
         {
-            has_been_visited[i] = true;
+            is_mixing_strand[i] = true;
         }
     }
     else
     {
         for (int i = to; i <= from; ++i)
         {
-            has_been_visited[i] = true;
+            is_mixing_strand[i] = true;
         }
     }
 
     for (int i = 0; i < number_of_vertices; ++i)
     {
-        if (has_been_visited[i] == true)
+        if (is_mixing_strand[i] == true)
         {
-            tour1_[i] = tour2[i];
-            tour2_[i] = tour1[i];
+            tour_1_[i] = tour_2[i];
+            tour_2_[i] = tour_1[i];
             for (int j = 0; j < number_of_vertices; ++j)
             {
-                if (tour1[j] == tour2[i])
+                if (tour_1[j] == tour_2[i])
                 {
                     check_tour_1[j] = 1;
                 }
-                if (tour2[j] == tour1[i])
+                if (tour_2[j] == tour_1[i])
                 {
                     check_tour_2[j] = 1;
                 }
@@ -253,10 +249,10 @@ void hybridise(const int& number_of_vertices,
         {
             ++current_index_2;
         }
-        if (has_been_visited[i] == 0)
+        if (is_mixing_strand[i] == false)
         {
-            tour1_[i] = tour1[current_index_1];
-            tour2_[i] = tour2[current_index_2];
+            tour_1_[i] = tour_1[current_index_1];
+            tour_2_[i] = tour_2[current_index_2];
             ++current_index_1;
             ++current_index_2;
         }
@@ -349,12 +345,10 @@ void select(const int& number_of_vertices,
                 float temporary_cost = current_costs[i];
                 current_costs[i] = current_costs[j];
                 current_costs[j] = temporary_cost;
-                for (int index = 0; index < number_of_vertices; ++index)
-                {
-                    int tmp = population[i][index];
-                    population[i][index] = population[j][index];
-                    population[j][index] = tmp;
-                }
+
+                std::vector<int> temp = population[i];
+                population[i] = population[j];
+                population[j] = temp;
             }
         }
     }

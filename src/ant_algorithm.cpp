@@ -49,7 +49,7 @@ int main()
     int width = 1200;
     int step_size = 8;
     int border = 25;
-    int number_of_vertices = 150;
+    int number_of_vertices = 100;
     std::vector<std::vector<int>> vertices;
     generate_vertices("vertices.data", height, width, step_size, border,
                       number_of_vertices, vertices);
